@@ -1,0 +1,24 @@
+#root {
+  width: 100%;
+  min-height: 100vh;
+}
+
+button {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.page-wrapper {
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes plant-sway {
+  0%, 100% { transform: rotate(-2deg); }
+  50% { transform: rotate(2deg); }
+}
+
+.garden-plant-sway {
+  animation: plant-sway 3s ease-in-out infinite;
+  transform-origin: bottom center;
+}
