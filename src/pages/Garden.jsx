@@ -23,11 +23,8 @@ const GROWTH_CONFIG = [
   { label: 'Grown', scale: 1.0, fontSize: 'text-2xl sm:text-3xl', glow: true },
 ]
 
-const getGrowthStage = (plantedAt, sessionsCompleted) => {
+const getGrowthStage = (plantedAt) => {
   if (!plantedAt) return 2
-  const sessionsSincePlant = sessionsCompleted
-  if (sessionsSincePlant >= 6) return 2
-  if (sessionsSincePlant >= 3) return 1
   const hoursSincePlanted = (Date.now() - plantedAt) / (1000 * 60 * 60)
   if (hoursSincePlanted >= 2) return 2
   if (hoursSincePlanted >= 1) return 1
@@ -35,7 +32,7 @@ const getGrowthStage = (plantedAt, sessionsCompleted) => {
 }
 
 const Garden = () => {
-  const { flowCoins, garden, inventory, sessionsCompleted, spendCoins, plantInGarden, removeFromGarden, addToInventory, removeFromInventory } = useApp()
+  const { flowCoins, garden, inventory, spendCoins, plantInGarden, removeFromGarden, addToInventory, removeFromInventory } = useApp()
   const [showShop, setShowShop] = useState(false)
   const [selectedInventoryItem, setSelectedInventoryItem] = useState(null)
   const [removingIndex, setRemovingIndex] = useState(null)
@@ -141,7 +138,7 @@ const Garden = () => {
                 <div className="relative p-3 sm:p-4">
                   <div className="grid grid-cols-5 gap-2">
                     {garden.map((plant, index) => {
-                      const growthStage = plant ? getGrowthStage(plant.plantedAt, sessionsCompleted) : 0
+                      const growthStage = plant ? getGrowthStage(plant.plantedAt) : 0
                       const growth = GROWTH_CONFIG[growthStage]
                       const isSelected = removingIndex === index
                       const isHovered = hoveredIndex === index

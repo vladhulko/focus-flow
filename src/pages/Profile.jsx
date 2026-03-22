@@ -136,7 +136,7 @@ const Profile = () => {
             <Image size={18} className="text-accent-blue" />
             <h2 className="text-white font-display font-semibold">Background Theme</h2>
           </div>
-          <div className="flex gap-2 overflow-x-auto pb-2">
+          <div className="flex gap-2 overflow-x-auto p-2 -m-2">
             {BACKGROUNDS.map((bg, i) => (
               <button
                 key={bg.id}

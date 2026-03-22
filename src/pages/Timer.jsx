@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Play, Pause, RotateCcw, Volume2, VolumeX, Settings, Coffee, Zap } from 'lucide-react'
+import { Play, Pause, RotateCcw, Settings, Coffee, Zap } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion' // eslint-disable-line no-unused-vars
 import { useApp } from '../context/AppContext'
 import { useTimer } from '../context/TimerContext'
@@ -9,7 +9,7 @@ import GlassPanel from '../components/GlassPanel'
 import TaskPanel from '../components/TaskPanel'
 
 const Timer = () => {
-  const { soundEnabled, setSoundEnabled, timerSettings } = useApp()
+  const { timerSettings } = useApp()
   const {
     mode, timeLeft, isRunning, isCompleted, progress,
     toggleStartPause, reset, formatTime,
@@ -47,14 +47,6 @@ const Timer = () => {
           </div>
 
           <div className="flex items-center gap-2">
-            <button
-              onClick={() => setSoundEnabled(!soundEnabled)}
-              className={`glass-button p-3 transition-colors ${
-                soundEnabled ? 'text-accent-purple' : 'text-white/30'
-              }`}
-            >
-              {soundEnabled ? <Volume2 size={18} /> : <VolumeX size={18} />}
-            </button>
             <MusicPlayer />
           </div>
         </motion.div>

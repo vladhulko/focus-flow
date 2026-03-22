@@ -153,8 +153,8 @@ const TimerSettings = ({ isOpen, onClose }) => {
                 <label className="text-white/70 text-sm font-medium">Auto-start break</label>
                 <button
                   onClick={() => setLocalSettings({ ...localSettings, autoStartBreak: !localSettings.autoStartBreak })}
-                  className={`relative w-12 h-7 rounded-full transition-all duration-300
-                    ${localSettings.autoStartBreak ? 'bg-accent-pink' : 'bg-white/10'}`}
+                  className={`relative w-12 h-7 rounded-full transition-all duration-300 border
+                    ${localSettings.autoStartBreak ? 'bg-accent-pink/80 border-accent-pink' : 'bg-white/10 border-white/20'}`}
                 >
                   <div
                     className={`absolute top-1 w-5 h-5 bg-white rounded-full transition-transform duration-300 shadow-md
@@ -179,9 +179,9 @@ const TimerSettings = ({ isOpen, onClose }) => {
 
             <button
               onClick={handleSave}
-              className="w-full mt-6 bg-linear-to-r from-accent-pink to-accent-purple text-white px-6 py-3
-                       rounded-xl font-semibold transition-all hover:opacity-90 hover:shadow-lg
-                       hover:shadow-accent-pink/20 active:scale-[0.98]"
+              className="w-full mt-6 bg-gradient-to-r from-accent-pink to-accent-purple text-white px-6 py-3
+                       rounded-xl font-semibold transition-all border border-white/20
+                       hover:opacity-90 hover:shadow-lg hover:shadow-accent-pink/20 active:scale-[0.98]"
             >
               Save Settings
             </button>
