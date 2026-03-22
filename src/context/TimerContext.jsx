@@ -20,7 +20,7 @@ const PRESET_SLOTS = [
 ]
 
 export const TimerProvider = ({ children }) => {
-  const { completeSession, startSession, soundEnabled, timerSettings } = useApp()
+  const { completeSession, startSession, soundEnabled, timerSettings, tickGarden } = useApp()
 
   const [presets, setPresets] = useState(() => {
     const saved = localStorage.getItem('focusflow-presets')
@@ -94,6 +94,7 @@ export const TimerProvider = ({ children }) => {
   useEffect(() => {
     if (isRunning && timeLeft > 0) {
       intervalRef.current = setInterval(() => {
+        if (modeRef.current === 'focus') tickGarden()
         setTimeLeft(prev => {
           if (prev <= 1) {
             clearInterval(intervalRef.current)

@@ -86,7 +86,7 @@ export const AppProvider = ({ children }) => {
   const plantInGarden = useCallback((index, plantData) => {
     if (garden[index] === null) {
       const newGarden = [...garden]
-      newGarden[index] = { ...plantData, growthStage: 0, plantedAt: Date.now() }
+      newGarden[index] = { ...plantData, growthStage: 0, plantedAt: Date.now(), focusSeconds: 0 }
       setGarden(newGarden)
       return true
     }
@@ -98,6 +98,16 @@ export const AppProvider = ({ children }) => {
     newGarden[index] = null
     setGarden(newGarden)
   }, [garden])
+
+  const tickGarden = useCallback(() => {
+    setGarden(prev => {
+      const hasPlants = prev.some(p => p !== null)
+      if (!hasPlants) return prev
+      return prev.map(plant =>
+        plant ? { ...plant, focusSeconds: (plant.focusSeconds || 0) + 1 } : null
+      )
+    })
+  }, [])
 
   const addToInventory = useCallback((item) => {
     setInventory(prev => [...prev, { ...item, id: Date.now() + Math.random() }])
@@ -196,6 +206,7 @@ export const AppProvider = ({ children }) => {
     spendCoins,
     plantInGarden,
     removeFromGarden,
+    tickGarden,
     addToInventory,
     removeFromInventory,
     startSession,

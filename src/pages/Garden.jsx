@@ -23,11 +23,13 @@ const GROWTH_CONFIG = [
   { label: 'Grown', scale: 1.0, fontSize: 'text-2xl sm:text-3xl', glow: true },
 ]
 
-const getGrowthStage = (plantedAt) => {
-  if (!plantedAt) return 2
-  const hoursSincePlanted = (Date.now() - plantedAt) / (1000 * 60 * 60)
-  if (hoursSincePlanted >= 2) return 2
-  if (hoursSincePlanted >= 1) return 1
+const SPROUT_SECONDS = 25 * 60
+const GROWN_SECONDS = 50 * 60
+
+const getGrowthStage = (focusSeconds) => {
+  const s = focusSeconds || 0
+  if (s >= GROWN_SECONDS) return 2
+  if (s >= SPROUT_SECONDS) return 1
   return 0
 }
 
@@ -138,7 +140,7 @@ const Garden = () => {
                 <div className="relative p-3 sm:p-4">
                   <div className="grid grid-cols-5 gap-2">
                     {garden.map((plant, index) => {
-                      const growthStage = plant ? getGrowthStage(plant.plantedAt) : 0
+                      const growthStage = plant ? getGrowthStage(plant.focusSeconds) : 0
                       const growth = GROWTH_CONFIG[growthStage]
                       const isSelected = removingIndex === index
                       const isHovered = hoveredIndex === index
