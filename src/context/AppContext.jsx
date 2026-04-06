@@ -127,10 +127,12 @@ export const AppProvider = ({ children }) => {
   }, [])
 
   const completeSession = useCallback(async (duration, sessionType = 'focus') => {
-    if (sessionType === 'focus') {
+    const isFocus = sessionType === 'focus'
+    const coinsToAdd = isFocus ? timerSettings.coinsPerSession : 0
+
+    if (isFocus) {
       setSessionsCompleted(prev => prev + 1)
       setTotalFocusTime(prev => prev + duration)
-      addCoins(timerSettings.coinsPerSession)
     }
 
     if (activeSessionId && !String(activeSessionId).startsWith('local-')) {
@@ -138,12 +140,17 @@ export const AppProvider = ({ children }) => {
         await api.patch(`/sessions/${activeSessionId}`, {
           status: 'completed',
           actual_duration: duration,
+          coins_to_add: coinsToAdd,
         })
       } catch {
       }
     }
-    setActiveSessionId(null)
 
+    if (coinsToAdd > 0) {
+      addCoins(coinsToAdd)
+    }
+
+    setActiveSessionId(null)
     checkAchievements()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeSessionId, addCoins, timerSettings.coinsPerSession])

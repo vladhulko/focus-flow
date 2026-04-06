@@ -24,16 +24,15 @@ router.patch('/:id', auth, async (req, res) => {
     if (session.user_id !== req.userId) return res.status(403).json({ error: 'Forbidden' })
     if (session.completed_at) return res.status(400).json({ error: 'Session already completed' })
 
+    const coinsToAdd = parseInt(req.body.coins_to_add) || 0
     const duration = req.body.actual_duration
       ? Math.floor(req.body.actual_duration / 60)
       : session.duration_minutes || 0
 
-    const coinsEarned = duration
-
-    await Session.complete(session.id, coinsEarned)
+    await Session.complete(session.id, coinsToAdd)
 
     const user = await User.findById(req.userId)
-    const newCoins = (user.flow_coins || 0) + coinsEarned
+    const newCoins = (user.flow_coins || 0) + coinsToAdd
     const newMinutes = (user.total_focus_minutes || 0) + duration
 
     const today = new Date().toISOString().slice(0, 10)
@@ -53,7 +52,7 @@ router.patch('/:id', auth, async (req, res) => {
 
     await Achievement.checkAndUnlock(req.userId, updatedUser)
 
-    res.json({ coins_earned: coinsEarned, new_total: updatedUser.flow_coins })
+    res.json({ coins_earned: coinsToAdd, new_total: updatedUser.flow_coins })
   } catch (err) {
     console.error('Complete session error:', err)
     res.status(500).json({ error: 'Internal server error' })
